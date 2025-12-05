@@ -44,8 +44,8 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      value: 'sooramalick@gmail.com',
-      link: 'mailto:sooramalick@gmail.com',
+      value: 'mamadoumansourcisse24@gmail.com',
+      link: 'mailto:mamadoumansourcisse24@gmail.com',
       color: 'orange'
     },
     {
@@ -165,7 +165,7 @@ const Contact = () => {
             <div className="bg-gray-700/50 p-6 rounded-xl">
               <h4 className="text-lg font-semibold mb-3 text-orange-400">💡 Le saviez-vous ?</h4>
               <p className="text-gray-300 text-sm">
-                Je travaille souvent depuis les cafés de Dakar (Almadies, Point E, Plateau). 
+                Je travaille souvent depuis les cafés de Dakar (Parcelles Assainies, west Foire, Fann Résidence)
                 Si vous êtes dans le coin, on peut se rencontrer pour discuter de votre projet 
                 autour d'un café touba ! ☕
               </p>
