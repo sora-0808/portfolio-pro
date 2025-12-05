@@ -3,7 +3,7 @@ import { User, Code, Palette, Lightbulb, Award, MapPin, Heart } from 'lucide-rea
 
 const About = () => {
   const skills = [
-    { icon: Code, name: 'Frontend', description: 'HTML&CSS, javascript, boostrap', color: 'orange' },
+    { icon: Code, name: 'Frontend', description: 'TypeScript, javascript, boostrap', color: 'orange' },
     { icon: Palette, name: 'Design UI/UX', description: 'Figma, PHOTOSHOP, CANVA', color: 'green' },
     { icon: Lightbulb, name: 'Backend', description: 'Node.js, PYTHON, MYSQL', color: 'orange' },
     { icon: Award, name: 'Innovation', description: 'Solutions créatives africaines', color: 'green' },
@@ -32,11 +32,14 @@ const About = () => {
               </div>
             </div>
             
-            <p className="text-gray-300 text-lg leading-relaxed">
-              Salut ! Je suis un jeune développeur de <span className="text-orange-400 font-semibold">Dakar</span>, 
-              étudiant en 3e année et passionné par le développement web et le design. 
-              Mon rêve ? Contribuer à faire du Sénégal un hub technologique en Afrique de l'Ouest !
-            </p>
+<p className="text-gray-300 text-lg leading-relaxed">
+  Salut ! Je suis un développeur basé à <span className="text-orange-400 font-semibold">Dakar</span>, 
+  titulaire d’une Licence universitaire et actuellement en Master. 
+  Passionné par le développement web, les technologies modernes et le design, 
+  je maîtrise aujourd’hui de nombreux outils, langages et frameworks à travers des projets concrets et professionnels. 
+  Mon objectif est de mettre mes compétences au service de l’innovation et du développement numérique au Sénégal et en Afrique de l’Ouest.
+</p>
+
             
             <p className="text-gray-300 text-lg leading-relaxed">
               Je combine créativité africaine et technologies modernes pour créer des expériences 

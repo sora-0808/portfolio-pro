@@ -44,7 +44,7 @@ const Portfolio = () => {
       title: 'École Numérique Sénégal',
       description: 'Plateforme éducative pour démocratiser l\'apprentissage du code au Sénégal.',
       image: '/image/etudiant.jpg',
-      technologies: ['Python', 'Bootstrap', 'Video.js', 'JavaScript'],
+      technologies: ['Python', 'Bootstrap', 'flutter', 'JavaScript'],
       liveUrl: 'https://ecole-numerique.vercel.app/',
       githubUrl: 'https://ecole-numerique.vercel.app/',
       longDescription: 'Plateforme éducative gratuite pour enseigner la programmation aux jeunes Sénégalais, avec des cours en français et des exemples adaptés au contexte local.',
