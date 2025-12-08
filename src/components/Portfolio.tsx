@@ -5,17 +5,18 @@ const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState<any>(null);
 
   const projects = [
-    {
+  {
   id: 1,
   title: 'DakarFood - Resto Africain',
   description: 'Section dédiée aux restaurants africains avec commande en ligne et paiement mobile.',
   image: '/image/resto.jpg',
   technologies: ['Javascript', 'HTML', 'Orange Money', 'Wave', 'CSS'],
-  liveUrl: 'kayynoss.netlify.app',
+  liveUrl: 'https://kayynoss.netlify.app',
   githubUrl: 'https://github.com/sora-0808/RESTO.CO',
   longDescription: 'Plateforme dédiée aux restaurants africains (sénégalais, ivoiriens, maliens, etc.), permettant la consultation de menus traditionnels, la commande en ligne et le paiement via Mobile Money. Interface multilingue (français et wolof) avec une expérience utilisateur simple et rapide.',
   flag: '🍝'
 }
+
 ,
     {
       id: 2,
