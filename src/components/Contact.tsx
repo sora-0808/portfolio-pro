@@ -107,7 +107,7 @@ const Contact = () => {
                 avec une vision, je suis là pour transformer vos idées en réalité digitale !
               </p>
               <p className="text-orange-400 font-semibold">
-                🚀 Réponse garantie sous 24h (sauf vendredi après-midi)
+                🚀 Réponse garantie sous 24h (sauf samedi après-midi)
               </p>
             </div>
 

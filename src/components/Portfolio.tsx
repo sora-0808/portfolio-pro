@@ -11,7 +11,7 @@ const Portfolio = () => {
   description: 'Section dédiée aux restaurants africains avec commande en ligne et paiement mobile.',
   image: '/image/resto.jpg',
   technologies: ['Javascript', 'HTML', 'Orange Money', 'Wave', 'CSS'],
-  liveUrl: 'https://resto5.netlify.app/',
+  liveUrl: 'kayynoss.netlify.app',
   githubUrl: 'https://github.com/sora-0808/RESTO.CO',
   longDescription: 'Plateforme dédiée aux restaurants africains (sénégalais, ivoiriens, maliens, etc.), permettant la consultation de menus traditionnels, la commande en ligne et le paiement via Mobile Money. Interface multilingue (français et wolof) avec une expérience utilisateur simple et rapide.',
   flag: '🍝'
