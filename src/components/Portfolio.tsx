@@ -67,7 +67,7 @@ const Portfolio = () => {
       title: 'Artisan Sénégal Portfolio',
       description: 'Site vitrine pour un maître-tailleur de Sandaga avec galerie interactive.',
       image: '/image/tailleur sn.jpg',
-      technologies: ['Gatsby', 'GraphQL', 'Cloudinary', 'WhatsApp API'],
+      technologies: ['Excel', 'Automatisation', 'Powerpoint', 'WhatsApp API'],
       liveUrl: 'https://pamzvision.netlify.app/',
       githubUrl: 'https://pamzvision.netlify.app/',
       longDescription: 'Portfolio créatif pour un artisan tailleur du marché Sandaga, avec galerie de créations et système de commande via WhatsApp, très populaire au Sénégal.',

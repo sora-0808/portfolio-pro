@@ -16,24 +16,50 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // 🔥 HANDLE SUBMIT CONNECTÉ À N8N - URL DE PRODUCTION
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!formData.name || !formData.email || !formData.subject || !formData.message) {
       alert('Veuillez remplir tous les champs obligatoires.');
       return;
     }
-    console.log('Form submitted:', formData);
-    alert('Merci pour votre message ! Je vous recontacterai très bientôt incha Allah 🙏');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+
+    try {
+      const response = await fetch(
+        // URL DE PRODUCTION N8N UTILISÉE ICI :
+        'https://sooramalick.app.n8n.cloud/webhook/contact-portfolio',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            subject: formData.subject,
+            message: formData.message
+          })
+        }
+      );
+
+      // Si le webhook n8n est configuré pour renvoyer un statut 204 (No Content),
+      // le statut `response.ok` sera toujours vrai.
+      if (!response.ok) {
+        // Cette ligne ne devrait s'exécuter que si n8n renvoie explicitement une erreur 4xx ou 5xx
+        throw new Error(`Erreur n8n: Statut ${response.status}`);
+      }
+
+      alert('✅ Message envoyé avec succès ! Je vous contacte très bientôt incha Allah 🙏');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi:', error);
+      alert('❌ Une erreur est survenue. Veuillez réessayer plus tard.');
+    }
   };
 
-  const contactInfo: Array<{
-    icon: React.ElementType;
-    title: string;
-    value: string;
-    link: string | null;
-    color: 'green' | 'orange';
-  }> = [
+  const contactInfo = [
     {
       icon: MessageCircle,
       title: 'WhatsApp',
@@ -57,12 +83,7 @@ const Contact = () => {
     }
   ];
 
-  const socialLinks: Array<{
-    icon: React.ElementType;
-    name: string;
-    url: string;
-    color: string;
-  }> = [
+  const socialLinks = [
     {
       icon: Github,
       name: 'GitHub',
@@ -83,6 +104,57 @@ const Contact = () => {
     }
   ];
 
+  const Input = ({ id, name, type, placeholder, required }: { id: string, name: string, type: string, placeholder: string, required: boolean }) => (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-gray-300 mb-2">{placeholder} {required && <span className="text-red-500">*</span>}</label>
+      <input
+        type={type}
+        id={id}
+        name={name}
+        value={formData[name as keyof typeof formData] as string}
+        onChange={handleChange}
+        required={required}
+        placeholder={placeholder}
+        className="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50 transition duration-150"
+      />
+    </div>
+  );
+
+  const TextArea = ({ id, name, placeholder, required }: { id: string, name: string, placeholder: string, required: boolean }) => (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-gray-300 mb-2">{placeholder} {required && <span className="text-red-500">*</span>}</label>
+      <textarea
+        id={id}
+        name={name}
+        rows={4}
+        value={formData.message}
+        onChange={handleChange}
+        required={required}
+        placeholder={placeholder}
+        className="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white focus:border-orange-500 focus:ring focus:ring-orange-500 focus:ring-opacity-50 transition duration-150 resize-none"
+      />
+    </div>
+  );
+
+  const ContactCard = ({ icon: Icon, title, value, link, color }: typeof contactInfo[0] & { icon: React.ElementType }) => (
+    <a href={link || '#'} target={link ? "_blank" : "_self"} rel={link ? "noopener noreferrer" : ""} className={`flex items-start bg-gray-700 p-6 rounded-xl border border-gray-600 transition duration-300 hover:bg-gray-600/50 ${link ? 'cursor-pointer' : 'cursor-default'}`}>
+      <div className={`flex-shrink-0 p-3 rounded-full bg-opacity-10 bg-${color}-500 mr-4`}>
+        <Icon className={`h-6 w-6 text-${color}-400`} />
+      </div>
+      <div>
+        <h3 className="text-lg font-semibold text-white mb-1">{title}</h3>
+        <p className="text-gray-300 break-words">{value}</p>
+      </div>
+    </a>
+  );
+
+  const SocialLink = ({ icon: Icon, name, url, color }: typeof socialLinks[0] & { icon: React.ElementType }) => (
+    <a href={url} target="_blank" rel="noopener noreferrer" aria-label={name} className={`text-gray-400 ${color} transition duration-300`}>
+      <Icon className="h-7 w-7" />
+    </a>
+  );
+
+
   return (
     <section id="contact" className="py-20 bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,161 +163,62 @@ const Contact = () => {
             <span className="text-3xl mr-3">📞</span>
             <span className="text-orange-400 font-semibold text-lg">Restons connectés</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Contactez-moi</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Contactez-moi</h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Vous avez un projet ? Parlons-en autour d'un bon thé à la menthe ! ☕
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Informations de contact */}
+          {/* Section d'Information */}
           <div className="space-y-8">
-            <div className="bg-gradient-to-r from-orange-500/10 to-green-500/10 p-6 rounded-xl border border-orange-500/20">
-              <h3 className="text-2xl font-bold mb-4 text-white">Discutons de votre projet</h3>
-              <p className="text-gray-300 text-lg leading-relaxed mb-4">
-                Que vous soyez une startup dakaroise, une PME sénégalaise ou un entrepreneur 
-                avec une vision, je suis là pour transformer vos idées en réalité digitale !
-              </p>
-              <p className="text-orange-400 font-semibold">
-                🚀 Réponse garantie sous 24h (sauf samedi après-midi)
-              </p>
-            </div>
-
             <div className="space-y-6">
-              {contactInfo.map((info, index) => (
-                <div key={index} className="flex items-center space-x-4">
-                  <div className={`p-3 rounded-lg ${
-                    info.color === 'green' ? 'bg-green-400/10' : 'bg-orange-400/10'
-                  }`}>
-                    <info.icon className={`h-6 w-6 ${
-                      info.color === 'green' ? 'text-green-400' : 'text-orange-400'
-                    }`} />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">{info.title}</h4>
-                    {info.link ? (
-                      <a
-                        href={info.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`transition-colors ${
-                          info.color === 'green' 
-                            ? 'text-gray-300 hover:text-green-400' 
-                            : 'text-gray-300 hover:text-orange-400'
-                        }`}
-                      >
-                        {info.value}
-                      </a>
-                    ) : (
-                      <span className="text-gray-300">{info.value}</span>
-                    )}
-                  </div>
-                </div>
+              {contactInfo.map((item, index) => (
+                <ContactCard key={index} {...item} icon={item.icon} />
               ))}
             </div>
 
-            <div className="pt-8">
-              <h4 className="text-lg font-semibold mb-4 text-white">Suivez-moi</h4>
-              <div className="flex space-x-4">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`bg-gray-700 p-3 rounded-lg transition-all duration-300 ${social.color} hover:transform hover:-translate-y-1`}
-                    aria-label={social.name}
-                  >
-                    <social.icon className="h-6 w-6" />
-                  </a>
+            <div className="pt-4 border-t border-gray-700">
+              <h3 className="text-xl font-bold text-white mb-4">Retrouvez-moi</h3>
+              <div className="flex space-x-6">
+                {socialLinks.map((link, index) => (
+                  <SocialLink key={index} {...link} icon={link.icon} />
                 ))}
               </div>
             </div>
-
-            <div className="bg-gray-700/50 p-6 rounded-xl">
-              <h4 className="text-lg font-semibold mb-3 text-orange-400">💡 Le saviez-vous ?</h4>
-              <p className="text-gray-300 text-sm">
-                Je travaille souvent depuis les cafés de Dakar (Parcelles Assainies, west Foire, Fann Résidence)
-                Si vous êtes dans le coin, on peut se rencontrer pour discuter de votre projet 
-                autour d'un café touba ! ☕
-              </p>
-            </div>
           </div>
 
-          {/* Formulaire de contact */}
-          <div className="bg-gray-700 p-8 rounded-2xl border border-gray-600">
+          {/* Formulaire de Contact */}
+          <div className="bg-gray-700 p-8 rounded-2xl border border-gray-600 shadow-xl">
+            <h3 className="text-2xl font-bold text-white mb-6">Envoyez-moi un message</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                    Nom complet *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-colors"
-                    placeholder="Votre nom"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-colors"
-                    placeholder="votre@email.com"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
-                  Type de projet *
-                </label>
-                <select
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-colors"
-                >
-                  <option value="">Choisissez votre projet</option>
-                  <option value="site-web">Site web vitrine</option>
-                  <option value="e-commerce">Boutique en ligne</option>
-                  <option value="design-uiux">Design UI/UX</option>
-                  <option value="app-mobile">Application mobile</option>
-                  <option value="consultation">Consultation tech</option>
-                  <option value="formation">Formation/Mentorat</option>
-                  <option value="autre">Autre projet</option>
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                  Parlez-moi de votre projet *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={6}
-                  className="w-full px-4 py-3 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-colors resize-none"
-                  placeholder="Décrivez votre vision, vos objectifs, votre budget... Plus vous me donnez de détails, mieux je peux vous aider ! 😊"
-                ></textarea>
-              </div>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Votre Nom Complet"
+                required={true}
+              />
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Votre Adresse Email"
+                required={true}
+              />
+              <Input
+                id="subject"
+                name="subject"
+                type="text"
+                placeholder="Sujet de votre message"
+                required={true}
+              />
+              <TextArea
+                id="message"
+                name="message"
+                placeholder="Votre Message..."
+                required={true}
+              />
 
               <button
                 type="submit"
